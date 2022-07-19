@@ -33,13 +33,13 @@ exports.getOneSauce = (req, res, next) => {
 exports.modifySauce = (req, res, next) => {
     Sauce.updateOne({_id: req.params.id}, {...req.body, _id: req.params.id})
     .then(things => res.status(200).json(things))
-    .catch(error => res.status(404).json({error}))
+    .catch(error => res.status(401).json({error}))
 };
 
 exports.deleteSauce = (req, res, next) => {
     Sauce.deleteOne({_id: req.params.id})
     .then(() => res.status(201).json({message: 'Sauce supprimé !'}))
-    .catch(error => res.status(400).json({error}))
+    .catch(error => res.status(401).json({error}))
 };
 
 exports.likeSauce = (req, res, next) => {

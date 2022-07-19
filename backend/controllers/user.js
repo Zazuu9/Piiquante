@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const regExMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -11,7 +13,7 @@ exports.signup = (req, res, next) => {
         })
         user.save()
         .then(() => res.status(201).json('Utilisateur créé !'))
-        .catch(error => res.status(409).json({error}))
+        .catch(error => res.status(409).json({message: 'non'}))
     })
     .catch(error => res.status(500).json({error}))
 };
@@ -42,3 +44,22 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({error}))
 };
+
+exports.getAllUser = (req, res, next) => {
+    User.find()
+    .then((user) => res.status(201).json(user))
+    .catch(error => res.status(500).json({error}))
+}
+
+exports.modifyUser = (req, res, next) => {
+    User.updateOne({_id: req.params.id}, {...req.body, _id: req.params.id})
+    .then((user) => res.status(201).json(user))
+    .catch(error => res.status(500).json({error}))
+}
+
+exports.deleteUser = (req, res, next) => {
+    User.deleteOne({_id: req.params.id})
+    .then((user) => res.status(201).json(user))
+    .catch(error => res.status(500).json({error}))
+}
+
