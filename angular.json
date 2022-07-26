@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "hot-takes"
+  "defaultProject": "hot-takes",
+  "cli": {
+    "analytics": "1a5bbfef-4d6a-402e-ade4-b71b65e6102b"
+  }
 }

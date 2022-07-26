@@ -1,10 +1,18 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const UserValidator = require('../validators/user')
 
-const regExMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 exports.signup = (req, res, next) => {
+    if (!UserValidator.validateEmail(req.body.email)) {
+        return res.status(400).json({message: "Merci de rentrer une adresse valide !"})
+    }
+
+    if (!UserValidator.validatePassword(req.body.password)) {
+        return res.status(400).json({message: "Votre mot de passe doit comprendre au moins 8 caractères, une lettre majuscule et un chiffre"})
+    }
+
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -13,7 +21,7 @@ exports.signup = (req, res, next) => {
         })
         user.save()
         .then(() => res.status(201).json('Utilisateur créé !'))
-        .catch(error => res.status(409).json({message: 'non'}))
+        .catch(error => res.status(409).json({message: "Soucis d'identifiant"}))
     })
     .catch(error => res.status(500).json({error}))
 };
