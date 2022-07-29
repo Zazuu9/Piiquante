@@ -4,9 +4,12 @@ const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const path = require('path');
 const app = express();
+const dotenv = require('dotenv').config();
+
+console.log(dotenv.parsed);
 
 
-mongoose.connect('mongodb+srv://Zazuu9:Namaste85@cluster0.qpibc.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_URL,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
